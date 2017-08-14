@@ -1,0 +1,25 @@
+{
+  "name": "Nodexplorer",
+  "version": "2.0.0",
+  "description": "Explore Node.js and Express.js",
+  "main": "explorer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "private": true,
+  "author": "Christian Castelli",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "async": "^2.5.0",
+    "bluebird": "^3.5.0",
+    "chokidar": "^1.7.0",
+    "commander": "^2.11.0",
+    "express": "^4.15.4",
+    "express-generator": "^4.15.0",
+    "mime": "^1.3.6",
+    "pretty-bytes": "^4.0.2",
+    "pug": "^2.0.0-rc.3",
+    "stat-mode": "^0.2.2",
+    "underscore": "^1.8.3"
+  }
+}

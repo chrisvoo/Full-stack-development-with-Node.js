@@ -1,0 +1,88 @@
+//- indentation cause children to be wrapped inside parent element
+doctype html
+html
+  include includes/head.pug
+//- javascript expressions    
+- var authenticated = true
+body(class=authenticated ? 'authed' : 'anon')
+  //-
+   Comments for your template writers.
+   Use as much text as you want.
+  //
+   Comments for your HTML readers.
+   Use as much text as you want.
+ 
+  //- wraps text inside a <h3> tag
+  h3 #{name}' PUG cheatsheet!
+
+  p Attributes
+    br
+    //- attributes with spaces controlled with pipes, styles as JS object
+    a(href='google.com' style={color: 'white', background: 'black'}) Google
+    |
+    |
+    a(class='button' href='google.com') Google
+    |
+    |
+    //- multiple classes at a time via javascript array
+    - var classes = ['first', 'second']
+    a(class=classes, href='google.com') Google
+    br/
+    //- multiline attributes
+    label Agreement
+    input(
+      type='checkbox'
+      name='agreement'
+      checked
+    )
+    //- Attributes applied using &attributes are not automatically escaped.
+    div#foo(data-bar="foo")&attributes({'data-foo': 'bar'})= "Text inside <em>div</em> should be also <script>alert(0)</script>"
+    
+    - var user = { description: 'foo bar baz' }
+    - var authorised = false
+    #user
+      if user.description
+        h2.green Description
+        p.description= user.description
+      else if authorised
+        h2.blue Description
+        p.description.
+          User has no description,
+          why not add one...
+      else
+        h2.red Description
+        p.description User has no description    
+    
+    //- long blocks
+    p
+      | The pipe always goes at the beginning of its own line,
+      | not counting indentation.
+    p.
+      sds jdsjd sjd jsd osdjajd saj dasjd jasdj oasj doasjd as 
+      sadasd asd aso doasd oas oja jdoasjdasoj doajs odj asod jao
+      sasdjsajd oasjod jasodjoasjod jasod jasoj doasj doasodjosjd
+    
+    <p class="hello">
+      <span style="color:red">Pure HTML #{name}</span>
+    </p>
+    
+    //- Mixins allow you to create reusable blocks of Pug.
+    mixin list
+      ul
+      - var list = ["Uno", "Dos", "Tres", "Cuatro", "Cinco", "Seis"]
+        each item in list.length ? list : "No values"
+         li= item
+  
+    +list
+    
+    //- like javascript switch
+    - var friends = 10
+    case friends
+      when 0
+      when 2
+        p you have no friends
+      when 1
+        p you have a friend
+      default
+        p you have #{friends} friends
+    
