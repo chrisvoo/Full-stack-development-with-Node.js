@@ -1,0 +1,29 @@
+{
+  "name": "learn_about_me",
+  "version": "1.0.0",
+  "description": "Sample application taken from \"Express in action\" for exploring how to manage MongoDB from Express",
+  "main": "app",
+  "private": true,
+  "scripts": {
+    "start": "node app",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "mongodb",
+    "express"
+  ],
+  "author": "Christian Castelli",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.17.2",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.3",
+    "ejs": "^2.5.7",
+    "express": "^4.15.4",
+    "express-session": "^1.15.5",
+    "mongoose": "^4.11.7",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0"
+  }
+}
