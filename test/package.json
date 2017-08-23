@@ -1,0 +1,27 @@
+{
+  "name": "mocha_test",
+  "version": "1.0.0",
+  "description": "Exploring mocha",
+  "main": "026_mocha.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chrisvoo/Full-stack-development-with-Node.js.git"
+  },
+  "keywords": [
+    "mocha",
+    "test"
+  ],
+  "author": "Christian Castelli",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chrisvoo/Full-stack-development-with-Node.js/issues"
+  },
+  "homepage": "https://github.com/chrisvoo/Full-stack-development-with-Node.js#readme",
+  "dependencies": {
+    "chai": "^4.1.1",
+    "mocha": "^3.5.0"
+  }
+}

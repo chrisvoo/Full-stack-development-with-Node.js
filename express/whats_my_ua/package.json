@@ -1,0 +1,27 @@
+{
+  "name": "whats-my-user-agent",
+  "version": "1.0.0",
+  "description": "Exploring how to test an Express application",
+  "main": "app",
+  "private": true,
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "mocha",
+    "test",
+    "express",
+    "ejs"
+  ],
+  "author": "Christian Castelli",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^2.5.7",
+    "express": "^4.15.4"
+  },
+  "devDependencies": {
+    "cheerio": "^1.0.0-rc.2",
+    "mocha": "^3.5.0",
+    "supertest": "^3.0.0"
+  }
+}
