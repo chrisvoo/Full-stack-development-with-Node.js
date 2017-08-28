@@ -57,7 +57,7 @@ router.get("/logout", function(req, res) {
 
 /* ---------- EDIT -------------- */
 router.get("/edit", ensureAuthenticated, function(req, res) {
-  res.render("edit");
+  res.render("edit", {csrfToken: req.csrfToken()});
 });
 
 router.post("/edit", ensureAuthenticated, function(req, res, next) {

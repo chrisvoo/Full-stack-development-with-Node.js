@@ -8,6 +8,7 @@ var express = require("express"),
     routes = require("./routes"),
     passport = require("passport"),
     setUpPassport = require("./setuppassport"),
+    csrf = require("csurf"),
     app = express();
 
 // promise and connection's options for avoiding
@@ -35,6 +36,7 @@ app.use(flash());
 
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(csrf());
 
 app.use(routes);
 
