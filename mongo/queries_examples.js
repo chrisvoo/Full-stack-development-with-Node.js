@@ -191,7 +191,7 @@ db.orders.aggregate([
 	{$out: 'targetedCustomers'}
 ]);
 
-// String functions
+// String functionss
 db.users.aggregate([
 	{$match: {username: 'kbanker'}},
 	{$project: {
@@ -201,3 +201,127 @@ db.users.aggregate([
 	}}
 ])
 
+// explain
+db.reviews.aggregate([
+	{$match : {'product_id': product['_id']}},
+	{$group : { _id:'$rating', count:{$sum:1}}}
+],{explain:true})
+
+
+
+// Atomicity and Updates --------------------------------------
+// 1 - replace document altogether
+user_id = ObjectId("4c4b1476238d3b4dd5000001")
+doc = db.users.findOne({_id: user_id})
+doc['email'] = 'mongodb-user@mongodb.com'
+print('updating ' + user_id)
+db.users.update({_id: user_id}, doc)
+
+// operator
+db.users.update({_id: user_id},
+	{$set: {email: 'mongodb-user2@mongodb.com'}});
+
+/* If you have some denormalization and you have to change Outdoors 
+ * wherever it appears in the ancestor lists of other categories.
+ * "multi" enables multi-updates causing the update to affect all documents 
+ * matching the selector - without {multi: true} an update will only affect 
+ * the first matching document. 
+ * "$" is a positional operator: it substitutes the array index matched by 
+ * the query selector with itself, and thus enables the update */
+doc = db.categories.findOne({_id: outdoors_id})
+doc.name = "The Great Outdoors"
+db.categories.update({_id: outdoors_id}, doc)
+db.categories.update(
+	{'ancestors._id': outdoors_id},
+	{$set: {'ancestors.$': doc}},
+	{multi: true}
+);
+
+/* Selects a review if user 4c4b1476238d3b4dd5000001 hasn't already voted, 
+ * adds the voter ID and then increments the helpful votes */
+db.reviews.update({
+		_id: ObjectId("4c4b1476238d3b4dd5000041"),
+		voter_ids: {
+			$ne: ObjectId("4c4b1476238d3b4dd5000001")
+		}
+	}, {
+	$push: {
+		voter_ids: ObjectId("4c4b1476238d3b4dd5000001")
+	},
+	$inc: {
+		helpful_votes: 1
+	}
+})
+
+/* upsert will create a new order object if it doesn’t yet exist, seamlessly 
+ * handling both initial and subsequent additions to the shopping cart. */
+cart_item = {
+	_id: ObjectId("4c4b1476238d3b4dd5003981"),
+	slug: "wheel-barrow-9092",
+	sku: "9092",
+	name: "Extra Large Wheel Barrow",
+	pricing: {
+		retail: 5897,
+		sale: 4897
+	}
+};
+
+selector = {
+	user_id: ObjectId("4c4b1476238d3b4dd5000001"),
+	state: 'CART'
+};
+update = {
+	$inc: {
+		sub_total: cart_item['pricing']['sale']
+	}
+}
+db.orders.update(selector, update, {upsert: true})
+
+
+// findAndModify
+
+newDoc = db.orders.findAndModify({
+	query: {
+		user_id: ObjectId("4c4b1476238d3b4dd5000001"),
+		state: 'CART'
+	},
+	update: {
+		$set: {
+			state: 'PRE-AUTHORIZE'
+		}
+	},
+	'new': true
+})
+
+
+oldDoc = db.orders.findAndModify({
+	query: {
+		user_id: ObjectId("4c4b1476238d3b4dd5000001"),
+		total: 99000,
+		state: "PRE-AUTHORIZE"
+	},
+	update: {
+		'$set': {
+			state: "AUTHORIZING"
+		}
+	}
+});
+
+auth_doc = {
+	ts: new Date(),
+	cc: 3432003948293040,
+	id: 2923838291029384483949348,
+	gateway: "Authorize.net"
+}
+db.orders.findAndModify({
+	query: {
+		user_id: ObjectId("4c4b1476238d3b4dd5000001"),
+		state: "AUTHORIZING"
+	},
+	update: {
+		$set: {
+			state: "PRE-SHIPPING",
+			authorization: auth_doc
+		}
+	}
+});
